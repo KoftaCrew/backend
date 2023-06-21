@@ -6,6 +6,7 @@ class ExamSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Exam
         fields = [
+            'id',
             'name',
             'created_at',
             'updated_at',
