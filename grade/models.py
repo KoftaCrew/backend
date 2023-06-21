@@ -22,4 +22,3 @@ class AnswerConfidence(timestamp.TimeStamp):
                 name='unique_answer_grade_and_key_phrase_together'
             )
         ]
-

@@ -12,4 +12,3 @@ class Answer(timestamp.TimeStamp):
     user_answer = models.ForeignKey(UserAnswer, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     text = models.CharField(max_length=2048)
-
