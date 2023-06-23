@@ -2,23 +2,13 @@ from rest_framework import serializers
 from model_answer.models import ModelAnswer, KeyPhrase
 
 
-class ModelAnswerSerializer(serializers.HyperlinkedModelSerializer):
+class ModelAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = ModelAnswer
-        fields = [
-            'question',
-            'text',
-            'created_at',
-            'updated_at',
-        ]
+        fields = '__all__'
 
 
-class KeyPhraseSerializer(serializers.HyperlinkedModelSerializer):
+class KeyPhraseSerializer(serializers.ModelSerializer):
     class Meta:
         model = KeyPhrase
-        fields = [
-            'model_answer',
-            'text',
-            'created_at',
-            'updated_at',
-        ]
+        fields = '__all__'

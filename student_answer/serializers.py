@@ -2,7 +2,7 @@ from rest_framework import serializers
 from student_answer.models import UserAnswer, Answer
 
 
-class UserAnswerSerializer(serializers.HyperlinkedModelSerializer):
+class UserAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAnswer
         fields = [
@@ -12,13 +12,7 @@ class UserAnswerSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class AnswerSerializer(serializers.HyperlinkedModelSerializer):
+class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = [
-            'user_answer',
-            'question',
-            'text',
-            'created_at',
-            'updated_at',
-        ]
+        fields = '__all__'

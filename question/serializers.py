@@ -2,12 +2,7 @@ from rest_framework import serializers
 from question.models import Question
 
 
-class QuestionSerializer(serializers.HyperlinkedModelSerializer):
+class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = [
-            'exam',
-            'question',
-            'created_at',
-            'updated_at',
-        ]
+        fields = '__all__'

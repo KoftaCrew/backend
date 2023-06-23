@@ -2,12 +2,7 @@ from rest_framework import serializers
 from exam.models import Exam
 
 
-class ExamSerializer(serializers.HyperlinkedModelSerializer):
+class ExamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exam
-        fields = [
-            'id',
-            'name',
-            'created_at',
-            'updated_at',
-        ]
+        fields = '__all__'

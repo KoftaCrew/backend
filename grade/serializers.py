@@ -2,25 +2,13 @@ from rest_framework import serializers
 from grade.models import AnswerGrade, AnswerConfidence
 
 
-class AnswerGradeSerializer(serializers.HyperlinkedModelSerializer):
+class AnswerGradeSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnswerGrade
-        fields = [
-            'answer',
-            'total_grade',
-            'created_at',
-            'updated_at',
-        ]
+        fields = '__all__'
 
 
-class AnswerConfidenceSerializer(serializers.HyperlinkedModelSerializer):
+class AnswerConfidenceSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnswerConfidence
-        fields = [
-            'answer_grade',
-            'key_phrase',
-            'confidence',
-            'grade',
-            'created_at',
-            'updated_at',
-        ]
+        fields = '__all__'
