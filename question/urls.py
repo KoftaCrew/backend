@@ -1,5 +1,7 @@
-from django.urls import path
+from rest_framework import routers
+from question import views
 
-urlpatterns = [
+router = routers.DefaultRouter()
+router.register('', viewset=views.QuestionViewSet)
 
-]
+urlpatterns = router.urls
