@@ -4,7 +4,10 @@ from model_answer.serializers import ModelAnswerSerializer
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    question_model_answer = ModelAnswerSerializer(many=False)
+    question_model_answer = ModelAnswerSerializer(
+        many=False,
+        read_only=True
+    )
 
     class Meta:
         model = Question
