@@ -4,7 +4,10 @@ from question.serializers import QuestionSerializer
 
 
 class ExamSerializer(serializers.ModelSerializer):
-    exam_questions = QuestionSerializer(many=True)
+    exam_questions = QuestionSerializer(
+        many=True,
+        read_only=True
+    )
 
     class Meta:
         model = Exam

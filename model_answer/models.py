@@ -13,7 +13,7 @@ class ModelAnswer(timestamp.TimeStamp):
 
 
 class KeyPhrase(timestamp.TimeStamp):
-    model_answer = models.ForeignKey(ModelAnswer, on_delete=models.CASCADE)
+    model_answer = models.ForeignKey(ModelAnswer, on_delete=models.CASCADE, related_name="model_answer_key_phrases")
     start_index = models.IntegerField(null=True)
     end_index = models.IntegerField(null=True)
     grade = models.FloatField(default=0)
