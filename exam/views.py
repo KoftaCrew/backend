@@ -12,3 +12,4 @@ class ExamViewSet(viewsets.ModelViewSet):
     queryset = Exam.objects.all().order_by('-created_at')
     serializer_class = ExamSerializer
     lookup_field = 'id'
+

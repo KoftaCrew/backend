@@ -8,6 +8,8 @@ class IsExamFilterBackend(filters.BaseFilterBackend):
     """
 
     def filter_queryset(self, request, queryset, view):
+        if request.method != "GET":
+            return queryset
         try:
             return queryset.filter(exam=request.GET['exam'])
         except KeyError:
