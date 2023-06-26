@@ -24,3 +24,15 @@ class QuestionViewSet(viewsets.ModelViewSet):
         ret = super().update(request, *args, **kwargs)
         self.queryset = Question.objects.all().order_by('-created_at')
         return ret
+
+    def partial_update(self, request, *args, **kwargs):
+        self.queryset = self.queryset.exclude(exam__mode=2)
+        ret = super().partial_update(request, *args, **kwargs)
+        self.queryset = Question.objects.all().order_by('-created_at')
+        return ret
+
+    def destroy(self, request, *args, **kwargs):
+        self.queryset = self.queryset.exclude(exam__mode=2)
+        ret = super().destroy(request, *args, **kwargs)
+        self.queryset = Question.objects.all().order_by('-created_at')
+        return ret
