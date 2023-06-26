@@ -15,3 +15,9 @@ class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
     lookup_field = 'id'
     filter_backends = [IsExamFilterBackend]
+
+    def update(self, request, *args, **kwargs):
+        self.queryset = self.queryset.exclude(exam__mode=2)
+        ret = super().update(request, *args, **kwargs)
+        self.queryset = Question.objects.all().order_by('-created_at')
+        return ret
