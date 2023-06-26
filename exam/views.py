@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from exam.serializers import ExamSerializer
 from exam.models import Exam
 
@@ -12,4 +12,5 @@ class ExamViewSet(viewsets.ModelViewSet):
     queryset = Exam.objects.all().order_by('-created_at')
     serializer_class = ExamSerializer
     lookup_field = 'id'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 

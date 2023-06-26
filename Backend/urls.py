@@ -24,4 +24,5 @@ urlpatterns = [
     path('model-answer/', include('model_answer.urls')),
     path('student-answer/', include('student_answer.urls')),
     path('grade/', include('grade.urls')),
+    path('auth/', include('auth.urls'))
 ]

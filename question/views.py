@@ -1,8 +1,10 @@
-import django_filters.rest_framework
 from rest_framework import viewsets
-from question.serializers import QuestionSerializer
-from question.models import Question
+from rest_framework import permissions
+
 from question.filters import IsExamFilterBackend
+from question.models import Question
+from question.serializers import QuestionSerializer
+
 
 # Create your views here.
 
@@ -15,6 +17,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     serializer_class = QuestionSerializer
     lookup_field = 'id'
     filter_backends = [IsExamFilterBackend]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def update(self, request, *args, **kwargs):
         self.queryset = self.queryset.exclude(exam__mode=2)
