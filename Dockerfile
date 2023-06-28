@@ -4,4 +4,4 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 80
-CMD exec gunicorn minders.wsgi:application --bind 0.0.0.0:80 --workers 3
+CMD exec gunicorn Backend.wsgi:application --bind 0.0.0.0:80 --workers 3
