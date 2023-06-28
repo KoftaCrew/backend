@@ -1,0 +1,42 @@
+name: Trigger auto deployment for backend
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - '**'
+    - '.github/workflows/backend-AutoDeployTrigger-81d6ff97-4f37-4b2f-a824-9dfa54cd94fc.yml'
+
+  # Allow mannually trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.BACKEND_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: koftacrew.azurecr.io
+          registryUsername: ${{ secrets.BACKEND_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.BACKEND_REGISTRY_PASSWORD }}
+          containerAppName: backend
+          resourceGroup: nlp-marking-assistant
+          imageToBuild: koftacrew.azurecr.io/backend:${{ github.sha }}
+          
+
+     
+
