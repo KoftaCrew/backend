@@ -2,3 +2,5 @@ django
 djangorestframework
 markdown
 django-filter
+mssql-django
+python-dotenv
