@@ -8,6 +8,10 @@ class ExamSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
+    user = serializers.PrimaryKeyRelatedField(
+        read_only=True,
+        default=serializers.CurrentUserDefault()
+    )
 
     class Meta:
         model = Exam

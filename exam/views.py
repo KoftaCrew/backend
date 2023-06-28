@@ -14,6 +14,9 @@ class ExamViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    def get_queryset(self):
+        return self.queryset.filter(user_id=self.request.user.id)
+
     def update(self, request, *args, **kwargs):
         self.queryset = self.queryset.exclude(mode=2)
         ret = super().update(request, *args, **kwargs)
@@ -31,4 +34,8 @@ class ExamViewSet(viewsets.ModelViewSet):
         ret = super().destroy(request, *args, **kwargs)
         self.queryset = Exam.objects.all().order_by('-created_at')
         return ret
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user.id)
+
 

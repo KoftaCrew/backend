@@ -1,6 +1,7 @@
 from django.db import models
 from abstract_models import timestamp
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.models import User
 
 
 class Exam(timestamp.TimeStamp):
@@ -15,3 +16,4 @@ class Exam(timestamp.TimeStamp):
         choices=ExamModes.choices,
         default=ExamModes.IDLE
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
