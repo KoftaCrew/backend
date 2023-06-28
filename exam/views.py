@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from exam.serializers import ExamSerializer
 from exam.models import Exam
 
@@ -12,4 +12,30 @@ class ExamViewSet(viewsets.ModelViewSet):
     queryset = Exam.objects.all().order_by('-created_at')
     serializer_class = ExamSerializer
     lookup_field = 'id'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        return self.queryset.filter(user_id=self.request.user.id)
+
+    def update(self, request, *args, **kwargs):
+        self.queryset = self.queryset.exclude(mode=2)
+        ret = super().update(request, *args, **kwargs)
+        self.queryset = Exam.objects.all().order_by('-created_at')
+        return ret
+
+    def partial_update(self, request, *args, **kwargs):
+        self.queryset = self.queryset.exclude(mode=2)
+        ret = super().partial_update(request, *args, **kwargs)
+        self.queryset = Exam.objects.all().order_by('-created_at')
+        return ret
+
+    def destroy(self, request, *args, **kwargs):
+        self.queryset = self.queryset.exclude(mode=2)
+        ret = super().destroy(request, *args, **kwargs)
+        self.queryset = Exam.objects.all().order_by('-created_at')
+        return ret
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user.id)
+
 

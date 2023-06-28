@@ -2,6 +2,7 @@ django
 djangorestframework
 markdown
 django-filter
+djangorestframework-simplejwt
 mssql-django
 python-dotenv
 gunicorn
