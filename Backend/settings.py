@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+
+env = os.environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ucm5q=i-)xkp&$v572yjh1^)chnyhc+-piqa23l(%)1#yqlk7p'
+SECRET_KEY = env.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.get("DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.get("ALLOWED_HOSTS").split(" ")
 
 # Application definition
 
@@ -76,11 +79,26 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+database_engine = env.get('DATABASE_ENGINE', 'django.db.backends.sqlite3')
+default_database = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': BASE_DIR / env.get('DATABASE_NAME', 'db.sqlite3'),
+}
+if database_engine == 'mssql':
+    default_database = {
+        'ENGINE': database_engine,
+        "NAME": env.get('DATABASE_NAME'),
+        "USER": env.get('DATABASE_USER'),
+        "PASSWORD": env.get("DATABASE_PASSWORD"),
+        "HOST": env.get('DATABASE_HOST'),
+        "PORT": env.get('DATABASE_PORT'),
+        "OPTIONS": {
+            "driver": "ODBC Driver 17 for SQL Server",
+        }
     }
+
+DATABASES = {
+    'default': default_database
 }
 
 # Password validation
@@ -104,18 +122,18 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = env.get("LANGUAGE_CODE", 'en-us')
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = env.get('TIME_ZONE', 'UTC')
 
-USE_I18N = True
+USE_I18N = env.get('USE_I18N', True)
 
-USE_TZ = True
+USE_TZ = env.get('USE_TZ', True)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = env.get('STATIC_URL')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -124,5 +142,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': env.get('PAGE_SIZE')
 }
