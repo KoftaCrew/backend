@@ -2,7 +2,6 @@ from rest_framework import viewsets, permissions
 from model_answer.serializers import ModelAnswerSerializer, KeyPhraseSerializer
 from model_answer.models import ModelAnswer, KeyPhrase
 from question.models import Question
-from exam.models import Exam
 from rest_framework import response
 
 
@@ -19,8 +18,7 @@ class ModelAnswerViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(question__exam__user_id=self.request.user.id)
 
     def create(self, request, *args, **kwargs):
-        exam_id =  Question.objects.get(id=request.data.get('question', -1)).exam_id
-        if  Exam.objects.get(id=exam_id).user_id == request.user.id:
+        if  Question.objects.get(id=request.data.get('question', -1)).exam.user_id == request.user.id:
             return super().create(request, *args, **kwargs)
         return response.Response({
             'details': "You aren't able to edit this exam"
@@ -32,3 +30,13 @@ class KeyPhraseViewSet(viewsets.ModelViewSet):
     serializer_class = KeyPhraseSerializer
     lookup_field = 'id'
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(model_answer__question__exam__user_id=self.request.user.id)
+
+    def create(self, request, *args, **kwargs):
+        if ModelAnswer.objects.get(id=request.data.get('question', -1)).question.exam.user_id == request.user.id:
+            return super().create(request, *args, **kwargs)
+        return response.Response({
+            'details': "You aren't able to edit this exam"
+        })
