@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 env = os.environ
 
@@ -27,7 +30,11 @@ SECRET_KEY = env.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.get("DEBUG", True)
 
-ALLOWED_HOSTS = env.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = []
+try:
+    ALLOWED_HOSTS = env.get("ALLOWED_HOSTS").split(" ")
+except AttributeError:
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -133,7 +140,7 @@ USE_TZ = env.get('USE_TZ', True)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = env.get('STATIC_URL')
+STATIC_URL = env.get('STATIC_URL', 'static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
