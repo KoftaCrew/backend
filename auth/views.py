@@ -1,6 +1,7 @@
 from rest_framework import mixins, viewsets, response
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
+from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
@@ -33,5 +34,5 @@ class CreateUserView(mixins.CreateModelMixin, viewsets.GenericViewSet):
             return response.Response({
                 'details': "Passwords doesn't match"
             })
-
+        request.data['password'] = make_password(request.data['password'])
         return super().create(request, *args, **kwargs)
