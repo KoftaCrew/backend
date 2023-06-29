@@ -1,14 +1,8 @@
-from question.models import Question
 from django.db import models
 from abstract_models import timestamp
 
 
 class ModelAnswer(timestamp.TimeStamp):
-    question = models.OneToOneField(
-        Question, on_delete=models.CASCADE,
-        to_field='id',
-        related_name="question_model_answer"
-    )
     text = models.CharField(max_length=2048)
 
 

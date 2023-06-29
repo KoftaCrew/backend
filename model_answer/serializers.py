@@ -16,4 +16,5 @@ class ModelAnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ModelAnswer
-        fields = '__all__'
+        fields = ['id', 'text', 'created_at', 'updated_at', 'model_answer_key_phrases']
+
