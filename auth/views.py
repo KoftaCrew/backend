@@ -36,3 +36,12 @@ class CreateUserView(mixins.CreateModelMixin, viewsets.GenericViewSet, mixins.Re
             })
         request.data['password'] = make_password(request.data['password'])
         return super().create(request, *args, **kwargs)
+
+
+class UserProfileView(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = UserSerializer
+    lookup_field = 'id'
+    queryset = User.objects.all()
+
+    def get_queryset(self):
+        return self.queryset.filter(id=self.request.user.id)
