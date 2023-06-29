@@ -16,4 +16,4 @@ class Exam(timestamp.TimeStamp):
         choices=ExamModes.choices,
         default=ExamModes.IDLE
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', default='1')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id', null=True)
