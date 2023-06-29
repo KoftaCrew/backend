@@ -37,6 +37,12 @@ try:
 except AttributeError:
     ALLOWED_HOSTS = []
 
+CORS_ALLOWED_ORIGINS = []
+try:
+    CORS_ALLOWED_ORIGINS = env.get("CORS_ALLOWED_ORIGINS").split(" ")
+except AttributeError:
+    CORS_ALLOWED_ORIGINS = []
+
 # Application definition
 
 INSTALLED_APPS = [
