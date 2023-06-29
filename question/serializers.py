@@ -8,11 +8,12 @@ from model_answer.models import ModelAnswer
 
 class QuestionSerializer(serializers.ModelSerializer):
     model_answer = ModelAnswerSerializer(
-        many=False,
+        many=False
     )
 
     class Meta:
         model = Question
+        depth = 3
         optional_fields = ['exam', ]
         fields = ['id', 'question', 'model_answer', 'created_at', 'updated_at']
 
@@ -21,8 +22,10 @@ class QuestionSerializer(serializers.ModelSerializer):
         for attr, value in validated_data.items():
             if attr != 'model_answer':
                 setattr(instance, attr, value)
-        new_model_answer: ModelAnswer = ModelAnswer.objects.create(
-            **validated_data.get('model_answer', {})
+        model_answer_serializer = ModelAnswerSerializer()
+        new_model_answer: ModelAnswer = ModelAnswerSerializer.create(
+            model_answer_serializer,
+            validated_data.get('model_answer', {})
         )
         instance.model_answer = new_model_answer
         instance.save()
@@ -35,8 +38,10 @@ class QuestionSerializer(serializers.ModelSerializer):
             question=validated_data.get('question', None),
             exam=validated_data.get('exam', -1)
         )
-        new_model_answer: ModelAnswer = ModelAnswer.objects.create(
-            **validated_data.get('model_answer', {})
+        model_answer_serializer = ModelAnswerSerializer()
+        new_model_answer: ModelAnswer = ModelAnswerSerializer.create(
+            model_answer_serializer,
+            validated_data.get('model_answer', {})
         )
         instance.save()
         instance.model_answer = new_model_answer
