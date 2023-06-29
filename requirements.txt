@@ -3,6 +3,7 @@ djangorestframework
 markdown
 django-filter
 djangorestframework-simplejwt
+django-cors-headers
 mssql-django
 python-dotenv
 gunicorn
