@@ -18,7 +18,7 @@ class ModelAnswerViewSet(viewsets.ModelViewSet):
         return self.queryset.filter(question__exam__user_id=self.request.user.id)
 
     def create(self, request, *args, **kwargs):
-        if  Question.objects.get(id=request.data.get('question', -1)).exam.user_id == request.user.id:
+        if Question.objects.get(id=request.data.get('question', -1)).exam.user_id == request.user.id:
             return super().create(request, *args, **kwargs)
         return response.Response({
             'details': "You aren't able to edit this exam"
