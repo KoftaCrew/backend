@@ -11,4 +11,5 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = '__all__'
+        optional_fields = ['exam', ]
+        fields = ['id', 'question', 'question_model_answer', 'created_at', 'updated_at']
