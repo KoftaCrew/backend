@@ -5,7 +5,7 @@ from django.contrib.auth.hashers import make_password
 
 
 # Create your views here.
-class CreateUserView(mixins.CreateModelMixin, viewsets.GenericViewSet):
+class CreateUserView(mixins.CreateModelMixin, viewsets.GenericViewSet, mixins.RetrieveModelMixin):
     queryset = User.objects.all().order_by('-id')
     serializer_class = UserSerializer
     lookup_field = 'id'
