@@ -49,6 +49,7 @@ jobs:
 
       - name: Migrate database
         run: |
+          export SECRET_KEY=${{ secrets.SECRET_KEY }}
           export DATABASE_ENGINE=${{ vars.DATABASE_ENGINE }}
           export DATABASE_NAME=${{ secrets.DATABASE_NAME }}
           export DATABASE_USER=${{ secrets.DATABASE_USER }}
