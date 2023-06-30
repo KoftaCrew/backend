@@ -30,6 +30,6 @@ class UpdateStudentAnswerViewSet(
     viewsets.GenericViewSet,
     mixins.UpdateModelMixin
 ):
-    queryset = StudentAnswer.objects.all().order_by('-id')
+    queryset = StudentAnswer.objects.all().filter(is_submitted=False).order_by('-id')
     serializer_class = UpdateStudentAnswerSerializer
     lookup_field = 'id'

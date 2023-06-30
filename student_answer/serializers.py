@@ -51,4 +51,6 @@ class UpdateStudentAnswerSerializer(serializers.ModelSerializer):
                     f"The question id {question.question} doesn't belong to the exam you are currently answering"
                 )
             instance.student_answer_id.create(**question)
+        instance.is_submitted = True
+        instance.save()
         return instance
