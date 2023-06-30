@@ -1,5 +1,5 @@
 from rest_framework import viewsets, permissions, mixins
-from exam.serializers import ExamSerializer, StudentExamDTOSerializer
+from exam.serializers import ExamSerializer, StudentExamDTOSerializer, ExamCardSerializer
 from exam.models import Exam
 
 
@@ -49,3 +49,21 @@ class StudentExamViewSet(
     lookup_field = 'id'
 
 
+class ExamCardViewSet(
+    viewsets.GenericViewSet,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin
+):
+    queryset = Exam.objects.all().order_by('-created_at')
+    serializer_class = ExamCardSerializer
+    lookup_field = 'id'
+
+    def get_permissions(self):
+        if self.action == 'list':
+            return [permissions.IsAuthenticated(), ]
+        return super().get_permissions()
+
+    def get_queryset(self):
+        if self.action == 'list':
+            return self.queryset.filter(user_id=self.request.user.id)
+        return self.queryset
