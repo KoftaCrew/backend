@@ -31,6 +31,22 @@ class StudentAnswerSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
 
+    def create(self, validated_data: dict) -> StudentAnswer:
+        potential_instances = StudentAnswer.objects.all().filter(
+                exam_id=validated_data.get('exam'),
+                student_id=validated_data.get('student_id')
+        )
+        if potential_instances.filter(is_submitted=True).exists():
+            raise ValidationError({
+                "non_field_errors": [
+                    "The fields exam, student_id must make a unique set."
+                ]
+            })
+        potential_instances = potential_instances.filter(is_submitted=False)
+        if potential_instances.exists():
+            return potential_instances.first()
+        return super().create(validated_data)
+
 
 class UpdateStudentAnswerSerializer(serializers.ModelSerializer):
     student_answer = AnswerSerializer(

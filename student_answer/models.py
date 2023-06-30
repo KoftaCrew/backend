@@ -10,9 +10,6 @@ class StudentAnswer(timestamp.TimeStamp):
     student_name = models.CharField(max_length=128)
     is_submitted = models.BooleanField(default=False)
 
-    class Meta:
-        unique_together = ('exam', 'student_id',)
-
 
 class Answer(timestamp.TimeStamp):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
