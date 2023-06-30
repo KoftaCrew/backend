@@ -1,9 +1,9 @@
-from rest_framework import viewsets, permissions, response, mixins
+from rest_framework import viewsets, permissions, mixins
 
 from question.filters import IsExamFilterBackendForGetMethod
-from student_answer.models import StudentAnswer, Answer
-from student_answer.serializers import StudentAnswerSerializer, AnswerSerializer
-from student_answer.filters import IsExamFilterBackendForGetMethodL1, IsExamFilterBackendForDeleteMethod
+from student_answer.models import StudentAnswer
+from student_answer.serializers import StudentAnswerSerializer, UpdateStudentAnswerSerializer
+from student_answer.filters import IsExamFilterBackendForDeleteMethod
 
 
 class StudentAnswerViewSet(
@@ -26,13 +26,10 @@ class StudentAnswerViewSet(
         return super().get_permissions()
 
 
-class AnswerViewSet(
+class UpdateStudentAnswerViewSet(
     viewsets.GenericViewSet,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin,
-    mixins.DestroyModelMixin
+    mixins.UpdateModelMixin
 ):
-    queryset = Answer.objects.all().order_by('-id')
-    serializer_class = AnswerSerializer
+    queryset = StudentAnswer.objects.all().order_by('-id')
+    serializer_class = UpdateStudentAnswerSerializer
     lookup_field = 'id'
-    filter_backends = [IsExamFilterBackendForGetMethodL1]

@@ -15,5 +15,6 @@ class StudentAnswer(timestamp.TimeStamp):
 
 class Answer(timestamp.TimeStamp):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    student_answer = models.ForeignKey(StudentAnswer, on_delete=models.CASCADE, null=True, related_name='student_answer')
+    student_answer = models.ForeignKey(StudentAnswer, on_delete=models.CASCADE, null=True,
+                                       related_name='student_answer_id')
     text = models.CharField(max_length=2048)
