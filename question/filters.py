@@ -2,7 +2,7 @@ from rest_framework import filters
 from django.core.exceptions import ValidationError
 
 
-class IsExamFilterBackend(filters.BaseFilterBackend):
+class IsExamFilterBackendForGetMethod(filters.BaseFilterBackend):
     """
     Filter that checks returns the questions of the required exam only
     """

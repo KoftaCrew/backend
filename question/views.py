@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework import response
 
-from question.filters import IsExamFilterBackend
+from question.filters import IsExamFilterBackendForGetMethod
 from question.models import Question
 from question.serializers import QuestionSerializer
 from exam.models import Exam
@@ -18,7 +18,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all().order_by('-created_at')
     serializer_class = QuestionSerializer
     lookup_field = 'id'
-    filter_backends = [IsExamFilterBackend]
+    filter_backends = [IsExamFilterBackendForGetMethod]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
