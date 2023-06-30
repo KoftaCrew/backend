@@ -3,8 +3,7 @@ from rest_framework.utils import model_meta
 from django.db import transaction
 
 from exam.models import Exam
-from model_answer.serializers import ModelAnswerSerializer, KeyPhraseSerializer
-from question.serializers import QuestionSerializer
+from question.serializers import QuestionSerializer, StudentQuestionDTOSerializer
 
 
 class ExamSerializer(serializers.ModelSerializer):
@@ -52,3 +51,15 @@ class ExamSerializer(serializers.ModelSerializer):
             QuestionSerializer.create(question_serializer, value)
         instance.save()
         return instance
+
+
+class StudentExamDTOSerializer(serializers.ModelSerializer):
+    exam_questions = StudentQuestionDTOSerializer(
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = Exam
+        depth = 2
+        fields = ['id', 'name', 'description', 'mode', 'exam_questions']

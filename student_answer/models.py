@@ -4,11 +4,17 @@ from exam.models import Exam
 from question.models import Question
 
 
-class UserAnswer(timestamp.TimeStamp):
+class StudentAnswer(timestamp.TimeStamp):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    student_id = models.CharField(max_length=32)
+    student_name = models.CharField(max_length=128)
+
+    class Meta:
+        unique_together = ('exam', 'student_id',)
 
 
 class Answer(timestamp.TimeStamp):
-    user_answer = models.ForeignKey(UserAnswer, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    student_answer = models.ForeignKey(StudentAnswer, on_delete=models.CASCADE, null=True,
+                                       related_name='student_answer_id')
     text = models.CharField(max_length=2048)
