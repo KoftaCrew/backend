@@ -6,9 +6,10 @@ from django.contrib.auth.models import User
 
 class Exam(timestamp.TimeStamp):
     class ExamModes(models.IntegerChoices):
-        IDLE = 0, _("idle")
-        EDITING = 1, _("edit")
-        RESULTS = 2, _("result")
+        IDLE = 0, "idle"
+        EDITING = 1, "edit"
+        RESULTS = 2, "result"
+        ANSWERING = 3, "answer"
 
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=2048, null=True)

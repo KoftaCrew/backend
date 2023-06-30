@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
+from exam.models import Exam
 from student_answer.models import StudentAnswer, Answer
 
 
@@ -31,6 +32,22 @@ class StudentAnswerSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
 
+    def create(self, validated_data: dict) -> StudentAnswer:
+        if Exam.objects.get(id=validated_data.get('exam'), mode=3).exists():
+            raise ValidationError("Exam is not in answer mode yet")
+        potential_instances = StudentAnswer.objects.all().filter(
+            exam_id=validated_data.get('exam'),
+            student_id=validated_data.get('student_id')
+        )
+        if potential_instances.filter(is_submitted=True).exists():
+            raise ValidationError(
+                "The fields exam, student_id must make a unique set."
+            )
+        potential_instances = potential_instances.filter(is_submitted=False)
+        if potential_instances.exists():
+            return potential_instances.first()
+        return super().create(validated_data)
+
 
 class UpdateStudentAnswerSerializer(serializers.ModelSerializer):
     student_answer = AnswerSerializer(
@@ -51,4 +68,6 @@ class UpdateStudentAnswerSerializer(serializers.ModelSerializer):
                     f"The question id {question.question} doesn't belong to the exam you are currently answering"
                 )
             instance.student_answer_id.create(**question)
+        instance.is_submitted = True
+        instance.save()
         return instance

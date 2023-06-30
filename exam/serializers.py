@@ -63,3 +63,9 @@ class StudentExamDTOSerializer(serializers.ModelSerializer):
         model = Exam
         depth = 2
         fields = ['id', 'name', 'description', 'mode', 'exam_questions']
+
+
+class ExamCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exam
+        fields = ['id', 'name', 'description', 'mode', 'created_at', 'updated_at']

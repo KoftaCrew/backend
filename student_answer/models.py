@@ -8,9 +8,7 @@ class StudentAnswer(timestamp.TimeStamp):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
     student_id = models.CharField(max_length=32)
     student_name = models.CharField(max_length=128)
-
-    class Meta:
-        unique_together = ('exam', 'student_id',)
+    is_submitted = models.BooleanField(default=False)
 
 
 class Answer(timestamp.TimeStamp):
