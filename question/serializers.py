@@ -47,3 +47,9 @@ class QuestionSerializer(serializers.ModelSerializer):
         instance.model_answer = new_model_answer
         instance.save()
         return instance
+
+
+class StudentQuestionDTOSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = ['id', 'created_at', 'updated_at', 'question']

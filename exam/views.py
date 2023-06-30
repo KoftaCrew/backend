@@ -1,5 +1,5 @@
-from rest_framework import viewsets, permissions
-from exam.serializers import ExamSerializer
+from rest_framework import viewsets, permissions, mixins
+from exam.serializers import ExamSerializer, StudentExamDTOSerializer
 from exam.models import Exam
 
 
@@ -12,7 +12,7 @@ class ExamViewSet(viewsets.ModelViewSet):
     queryset = Exam.objects.all().order_by('-created_at')
     serializer_class = ExamSerializer
     lookup_field = 'id'
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return self.queryset.filter(user_id=self.request.user.id)
@@ -37,5 +37,15 @@ class ExamViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user.id)
+
+
+class StudentExamViewSet(
+    viewsets.GenericViewSet,
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin
+):
+    queryset = Exam.objects.all().order_by('-created_at')
+    serializer_class = StudentExamDTOSerializer
+    lookup_field = 'id'
 
 

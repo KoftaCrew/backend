@@ -12,7 +12,6 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class StudentAnswerSerializer(serializers.ModelSerializer):
-    # TODO: Create serializer for exam for students view
     student_answer = AnswerSerializer(
         many=True,
         required=False,
@@ -21,7 +20,7 @@ class StudentAnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StudentAnswer
-        optional_fields = ['student_answer']
+        # optional_fields = ['student_answer']
         fields = [
             'id',
             'exam',
