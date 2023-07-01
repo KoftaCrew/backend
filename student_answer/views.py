@@ -35,7 +35,7 @@ class StudentAnswerViewSet(
         except ValidationError as err:
             return response.Response(
                 {
-                    'details': err.message
+                    'detail': err.message
                 },
                 status=status.HTTP_403_FORBIDDEN
             )
@@ -58,7 +58,7 @@ class UpdateStudentAnswerViewSet(
         except ValidationError as err:
             return response.Response(
                 {
-                    'details': err.message
+                    'detail': err.message
                 },
                 status=status.HTTP_403_FORBIDDEN
             )
