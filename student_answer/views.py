@@ -1,4 +1,5 @@
-from rest_framework import viewsets, permissions, mixins
+from rest_framework import viewsets, permissions, mixins, response
+from django.core.exceptions import ValidationError
 
 from question.filters import IsExamFilterBackendForGetMethod
 from student_answer.models import StudentAnswer
@@ -27,6 +28,14 @@ class StudentAnswerViewSet(
         if self.action != 'create':
             return self.queryset.filter(exam__user_id=self.request.user.id)
         return self.queryset
+
+    def create(self, request, *args, **kwargs):
+        try:
+            return super().create(request, *args, **kwargs)
+        except ValidationError as err:
+            return response.Response({
+                'details': err.message
+            })
 
 
 class UpdateStudentAnswerViewSet(

@@ -1,8 +1,7 @@
 from rest_framework import serializers
 from django.db import transaction
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.exceptions import ValidationError
 
-from exam.models import Exam
 from student_answer.models import StudentAnswer, Answer
 
 
@@ -45,10 +44,10 @@ class StudentAnswerSerializer(serializers.ModelSerializer):
                 )
             potential_instances = potential_instances.filter(is_submitted=False)
             if potential_instances.exists():
-                return potential_instances.first()
+                instance = potential_instances.get()
+                return instance
             return super().create(validated_data)
         raise ValidationError("Exam is not in answer mode yet")
-
 
 
 class UpdateStudentAnswerSerializer(serializers.ModelSerializer):
