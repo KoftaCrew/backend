@@ -52,18 +52,21 @@ class StudentExamViewSet(
 class ExamCardViewSet(
     viewsets.GenericViewSet,
     mixins.RetrieveModelMixin,
-    mixins.ListModelMixin
+    mixins.ListModelMixin,
+    mixins.UpdateModelMixin
 ):
     queryset = Exam.objects.all().order_by('-created_at')
     serializer_class = ExamCardSerializer
     lookup_field = 'id'
 
     def get_permissions(self):
-        if self.action == 'list':
+        if self.action == 'list' or self.action == 'update' or self.action == 'partial_update':
             return [permissions.IsAuthenticated(), ]
         return super().get_permissions()
 
     def get_queryset(self):
-        if self.action == 'list':
+        if self.action == 'list' or self.action == 'update' or self.action == 'partial_update':
             return self.queryset.filter(user_id=self.request.user.id)
         return self.queryset
+
+
