@@ -66,7 +66,8 @@ class UpdateStudentAnswerSerializer(serializers.ModelSerializer):
         for question in validated_data.get('student_answer'):
             if question.get('question').exam_id != instance.exam_id:
                 raise ValidationError(
-                    f"The question id {question.question} doesn't belong to the exam you are currently answering"
+                    f"The question id {question.get('question').id} doesn't belong to the exam you are currently "
+                    f"answering"
                 )
             instance.student_answer_id.create(**question)
         instance.is_submitted = True
