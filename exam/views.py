@@ -30,7 +30,7 @@ class ExamViewSet(viewsets.ModelViewSet):
         return ret
 
     def destroy(self, request, *args, **kwargs):
-        self.queryset = self.queryset.exclude(mode=2)
+        self.queryset = self.queryset.exclude(mode=3)
         ret = super().destroy(request, *args, **kwargs)
         self.queryset = Exam.objects.all().order_by('-created_at')
         return ret
