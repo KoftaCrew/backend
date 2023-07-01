@@ -58,14 +58,15 @@ class ExamCardViewSet(
     queryset = Exam.objects.all().order_by('-created_at')
     serializer_class = ExamCardSerializer
     lookup_field = 'id'
+    authenticated_actions = ['list', 'update', 'partial_update']
 
     def get_permissions(self):
-        if self.action == 'list' or self.action == 'update' or self.action == 'partial_update':
+        if self.action in self.authenticated_actions:
             return [permissions.IsAuthenticated(), ]
         return super().get_permissions()
 
     def get_queryset(self):
-        if self.action == 'list' or self.action == 'update' or self.action == 'partial_update':
+        if self.action in self.authenticated_actions:
             return self.queryset.filter(user_id=self.request.user.id)
         return self.queryset
 
