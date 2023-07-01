@@ -40,7 +40,7 @@ class StudentAnswerSerializer(serializers.ModelSerializer):
             )
             if potential_instances.filter(is_submitted=True).exists():
                 raise ValidationError(
-                    "The fields exam, student_id must make a unique set."
+                    "You have already submitted your answers for this exam"
                 )
             potential_instances = potential_instances.filter(is_submitted=False)
             if potential_instances.exists():

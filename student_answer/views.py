@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, mixins, response
+from rest_framework import viewsets, permissions, mixins, response, status
 from django.core.exceptions import ValidationError
 
 from question.filters import IsExamFilterBackendForGetMethod
@@ -33,9 +33,12 @@ class StudentAnswerViewSet(
         try:
             return super().create(request, *args, **kwargs)
         except ValidationError as err:
-            return response.Response({
-                'details': err.message
-            })
+            return response.Response(
+                {
+                    'details': err.message
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
 
 
 class UpdateStudentAnswerViewSet(
@@ -48,3 +51,14 @@ class UpdateStudentAnswerViewSet(
     ).order_by('-id')
     serializer_class = UpdateStudentAnswerSerializer
     lookup_field = 'id'
+
+    def update(self, request, *args, **kwargs):
+        try:
+            super().update(request, *args, **kwargs)
+        except ValidationError as err:
+            return response.Response(
+                {
+                    'details': err.message
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
