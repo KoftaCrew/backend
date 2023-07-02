@@ -54,7 +54,7 @@ class UpdateStudentAnswerViewSet(
 
     def update(self, request, *args, **kwargs):
         try:
-            super().update(request, *args, **kwargs)
+            return super().update(request, *args, **kwargs)
         except ValidationError as err:
             return response.Response(
                 {
