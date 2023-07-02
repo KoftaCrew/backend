@@ -18,6 +18,6 @@ class KeyPhrase(timestamp.TimeStamp):
                 check=models.Q(
                     end_index__gt=models.F("start_index")
                 ),
-                name="end_index_gt_start_index"
+                name="model_answer_end_index_gt_start_index"
             ),
         ]

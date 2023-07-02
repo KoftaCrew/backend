@@ -16,3 +16,4 @@ class Answer(timestamp.TimeStamp):
     student_answer = models.ForeignKey(StudentAnswer, on_delete=models.CASCADE, null=True,
                                        related_name='student_answer_id')
     text = models.CharField(max_length=2048, null=True, blank=True)
+    total_grade = models.FloatField
