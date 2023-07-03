@@ -2,6 +2,7 @@ import json
 import requests
 import threading
 from rest_framework import serializers
+from django.db import transaction
 
 from exam.models import Exam
 from model_answer.models import KeyPhrase, ModelAnswer
@@ -25,6 +26,7 @@ class StartGradingTriggerSerializer(serializers.ModelSerializer):
         return instance
 
 
+@transaction.atomic
 def grade(exam_id: int):
     submission_ids = StudentAnswer.objects.filter(exam_id=exam_id).values_list('id', flat=True)
     for submission in submission_ids:
@@ -57,25 +59,33 @@ def grade(exam_id: int):
 
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
-                response_dict : dict = response.json()
+                response_dict: dict = response.json()
+                total_grade = 0
                 for i in range(0, len(response_dict.get('model_answer_ids', []))):
                     model_answer_id = response_dict.get('model_answer_ids')[i]
                     start_index = response_dict.get('segmented_student_answer')[i][0]
                     end_index = response_dict.get('segmented_student_answer')[i][1]
                     score = response_dict.get('scores')[i]
+                    confidence = response_dict.get('confidence')[i]
+                    total_grade += score
                     AnswerSegment.objects.create(
                         answer=answer,
                         key_phrase=KeyPhrase.objects.get(id=model_answer_id),
                         start_index=start_index,
                         end_index=end_index,
                         grade=score,
-                        confidence=0 #TODO: To be changed later
-                    ).save()
+                        confidence=confidence
+                    )
 
+                answer.total_grade = total_grade
+                answer.save()
 
 
 def get_text_segment(model_answer_object: ModelAnswer, key_phrase_object: KeyPhrase) -> str:
-    ret = ""
-    for index in range(key_phrase_object.start_index, key_phrase_object.end_index):
-        ret += model_answer_object.text[index]
+    full_string: str = model_answer_object.text
+    start_index: int = key_phrase_object.start_index
+    end_index: int = key_phrase_object.end_index
+    ret: str = ""
+    for index in range(start_index, end_index):
+        ret += full_string[index]
     return ret
