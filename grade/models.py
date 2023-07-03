@@ -4,21 +4,20 @@ from model_answer.models import KeyPhrase
 from student_answer.models import Answer
 
 
-class AnswerGrade(timestamp.TimeStamp):
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    total_grade = models.FloatField()
-
-
-class AnswerConfidence(timestamp.TimeStamp):
-    answer_grade = models.ForeignKey(AnswerGrade, on_delete=models.CASCADE)
-    key_phrase = models.ForeignKey(KeyPhrase, on_delete=models.CASCADE)
-    confidence = models.FloatField()
+class AnswerSegment(timestamp.TimeStamp):
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=False)
+    key_phrase = models.ForeignKey(KeyPhrase, on_delete=models.CASCADE, null=False)
+    start_index = models.IntegerField()
+    end_index = models.IntegerField()
     grade = models.FloatField()
+    confidence = models.FloatField()
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                fields=['answer_grade', 'key_phrase'],
-                name='unique_answer_grade_and_key_phrase_together'
+            models.CheckConstraint(
+                check=models.Q(
+                    end_index__gt=models.F("start_index")
+                ),
+                name="student_answer_end_index_gt_start_index"
             )
         ]

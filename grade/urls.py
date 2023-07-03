@@ -1,5 +1,7 @@
-from django.urls import path
+from rest_framework import routers
+from grade.views import StartGradingTriggerViewSet
 
-urlpatterns = [
+router = routers.DefaultRouter()
+router.register('', StartGradingTriggerViewSet)
 
-]
+urlpatterns = router.urls

@@ -7,3 +7,4 @@ django-cors-headers
 mssql-django
 python-dotenv
 gunicorn
+requests

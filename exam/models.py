@@ -1,7 +1,7 @@
-from django.db import models
-from abstract_models import timestamp
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
+from django.db import models
+
+from abstract_models import timestamp
 
 
 class Exam(timestamp.TimeStamp):
@@ -10,6 +10,7 @@ class Exam(timestamp.TimeStamp):
         EDITING = 1, "edit"
         RESULTS = 2, "result"
         ANSWERING = 3, "answer"
+        GRADING = 4, 'grading'
 
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=2048, null=True)

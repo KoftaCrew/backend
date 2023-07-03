@@ -69,5 +69,3 @@ class ExamCardViewSet(
         if self.action in self.authenticated_actions:
             return self.queryset.filter(user_id=self.request.user.id)
         return self.queryset
-
-

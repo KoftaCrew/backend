@@ -27,6 +27,8 @@ class StudentAnswerViewSet(
     def get_queryset(self):
         if self.action != 'create':
             return self.queryset.filter(exam__user_id=self.request.user.id)
+        if self.action == "list":
+            return StudentAnswer.objects.all().filter(exam__mode__gte=3).order_by('-id')
         return self.queryset
 
     def create(self, request, *args, **kwargs):
