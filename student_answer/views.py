@@ -76,3 +76,4 @@ class ResultsViewSet(
     )
     serializer_class = ResultsSerializer
     lookup_field = 'id'
+    permission_classes = [permissions.IsAuthenticated]
