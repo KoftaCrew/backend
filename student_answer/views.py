@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 
 from question.filters import IsExamFilterBackendForGetMethod
 from student_answer.models import StudentAnswer
-from student_answer.serializers import StudentAnswerSerializer, UpdateStudentAnswerSerializer
+from student_answer.serializers import StudentAnswerSerializer, UpdateStudentAnswerSerializer, ResultsSerializer
 from student_answer.filters import IsExamFilterBackendForDeleteMethod
 
 
@@ -64,3 +64,15 @@ class UpdateStudentAnswerViewSet(
                 },
                 status=status.HTTP_403_FORBIDDEN
             )
+
+
+class ResultsViewSet(
+    viewsets.GenericViewSet,
+    mixins.RetrieveModelMixin
+):
+    queryset = StudentAnswer.objects.all().filter(
+        is_submitted=True,
+        exam__mode=2
+    )
+    serializer_class = ResultsSerializer
+    lookup_field = 'id'

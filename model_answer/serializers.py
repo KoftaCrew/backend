@@ -7,7 +7,7 @@ class KeyPhraseSerializer(serializers.ModelSerializer):
     class Meta:
         model = KeyPhrase
         depth = 1
-        fields = '__all__'
+        fields = ('id', 'created_at', 'updated_at', 'start_index', 'end_index', 'grade')
 
 
 class ModelAnswerSerializer(serializers.ModelSerializer):

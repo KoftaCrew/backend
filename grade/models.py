@@ -5,7 +5,7 @@ from student_answer.models import Answer
 
 
 class AnswerSegment(timestamp.TimeStamp):
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=False)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=False, related_name='answer_segments')
     key_phrase = models.ForeignKey(KeyPhrase, on_delete=models.CASCADE, null=False)
     start_index = models.IntegerField()
     end_index = models.IntegerField()

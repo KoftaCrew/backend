@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.db import transaction
 from django.core.exceptions import ValidationError
 
+from grade.serializers import AnswerSegmentSerializer
+from question.serializers import QuestionSerializer
 from student_answer.models import StudentAnswer, Answer
 
 
@@ -73,3 +75,24 @@ class UpdateStudentAnswerSerializer(serializers.ModelSerializer):
         instance.is_submitted = True
         instance.save()
         return instance
+
+
+class AnswerResultSerializer(serializers.ModelSerializer):
+    question = QuestionSerializer(many=False)
+    answer_segments = AnswerSegmentSerializer(many=True)
+
+    class Meta:
+        model = Answer
+        fields = '__all__'
+
+
+class ResultsSerializer(serializers.ModelSerializer):
+    answers = AnswerResultSerializer(
+        many=True,
+        required=False,
+        source='student_answer_id'
+    )
+
+    class Meta:
+        model = StudentAnswer
+        fields = '__all__'

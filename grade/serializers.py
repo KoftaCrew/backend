@@ -92,3 +92,9 @@ def get_text_segment(model_answer_object: ModelAnswer, key_phrase_object: KeyPhr
     for index in range(start_index, end_index):
         ret += full_string[index]
     return ret
+
+
+class AnswerSegmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AnswerSegment
+        fields = '__all__'
