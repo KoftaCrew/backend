@@ -79,6 +79,9 @@ def grade(exam_id: int):
 
                 answer.total_grade = total_grade
                 answer.save()
+    exam = Exam.objects.get(id=exam_id)
+    exam.mode = 2
+    exam.save()
 
 
 def get_text_segment(model_answer_object: ModelAnswer, key_phrase_object: KeyPhrase) -> str:
