@@ -1,6 +1,12 @@
-from rest_framework import viewsets, permissions, mixins
+import requests
+import json
+
+import rest_framework.response
+from rest_framework import viewsets, permissions, mixins, response
+
 from exam.serializers import ExamSerializer, StudentExamDTOSerializer, ExamCardSerializer
 from exam.models import Exam
+from Backend.settings import MODEL_URL
 
 
 # Create your views here.
@@ -69,3 +75,21 @@ class ExamCardViewSet(
         if self.action in self.authenticated_actions:
             return self.queryset.filter(user_id=self.request.user.id)
         return self.queryset
+
+
+class SmartSegmentationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
+    queryset = Exam.objects.all()
+    serializer_class = ExamSerializer
+    def create(self, request, *args, **kwargs):
+        payload = json.dumps(request.data)
+        print(payload)
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        url = MODEL_URL + "segment/"
+        result = requests.request("POST", url, headers=headers, data=payload)
+        print(result)
+        return response.Response(
+            result.json(),
+            status=result.status_code
+        )

@@ -27,7 +27,8 @@ class StudentAnswerViewSet(
     def get_queryset(self):
         if self.action != 'create':
             if self.action == "list":
-                return StudentAnswer.objects.all().filter(exam__mode=2).order_by('-id').filter(exam__user_id=self.request.user.id)
+                return StudentAnswer.objects.all().filter(exam__mode=2).order_by('-id').filter(
+                    exam__user_id=self.request.user.id)
             return self.queryset.filter(exam__user_id=self.request.user.id)
         return self.queryset
 
