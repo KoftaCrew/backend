@@ -80,15 +80,14 @@ class ExamCardViewSet(
 class SmartSegmentationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     queryset = Exam.objects.all()
     serializer_class = ExamSerializer
+
     def create(self, request, *args, **kwargs):
         payload = json.dumps(request.data)
-        print(payload)
         headers = {
             'Content-Type': 'application/json'
         }
         url = MODEL_URL + "segment/"
         result = requests.request("POST", url, headers=headers, data=payload)
-        print(result)
         return response.Response(
             result.json(),
             status=result.status_code
