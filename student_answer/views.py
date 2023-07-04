@@ -10,7 +10,6 @@ from student_answer.filters import IsExamFilterBackendForDeleteMethod
 class StudentAnswerViewSet(
     viewsets.GenericViewSet,
     mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin
 ):

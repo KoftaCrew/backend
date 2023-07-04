@@ -47,8 +47,7 @@ class ExamViewSet(viewsets.ModelViewSet):
 
 class StudentExamViewSet(
     viewsets.GenericViewSet,
-    mixins.RetrieveModelMixin,
-    mixins.ListModelMixin
+    mixins.RetrieveModelMixin
 ):
     queryset = Exam.objects.all().order_by('-created_at')
     serializer_class = StudentExamDTOSerializer
