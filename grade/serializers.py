@@ -55,7 +55,7 @@ def grade(exam_id: int):
             headers = {
                 'Content-Type': 'application/json'
             }
-            url = MODEL_URL + "grade/"
+            url = MODEL_URL + "grade"
 
             response = requests.request("POST", url, headers=headers, data=payload)
             if response.status_code == 200:
