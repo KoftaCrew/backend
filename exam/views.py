@@ -1,7 +1,6 @@
 import requests
 import json
 
-import rest_framework.response
 from rest_framework import viewsets, permissions, mixins, response
 
 from exam.serializers import ExamSerializer, StudentExamDTOSerializer, ExamCardSerializer
@@ -79,6 +78,7 @@ class ExamCardViewSet(
 class SmartSegmentationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin):
     queryset = Exam.objects.all()
     serializer_class = ExamSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         payload = json.dumps(request.data)
