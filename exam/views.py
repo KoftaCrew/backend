@@ -85,7 +85,7 @@ class SmartSegmentationViewSet(viewsets.GenericViewSet, mixins.CreateModelMixin)
         headers = {
             'Content-Type': 'application/json'
         }
-        url = MODEL_URL + "segment/"
+        url = MODEL_URL + "segment"
         result = requests.request("POST", url, headers=headers, data=payload)
         return response.Response(
             result.json(),
